@@ -18,8 +18,6 @@ client.on("message", msg =>{
     //role give/remove @user
     //changecolor role @user
     //changenick @user nickname
-    //whois
-    //afk status
     //serverinfo
     //help
     //deleterole role
@@ -27,10 +25,6 @@ client.on("message", msg =>{
     //announce channel message
     //roleinfo
     //profile
-    if(mentioned(msg.mentions.members.array()[0]) !== "-1"){
-        let status = mentioned(msg.mentions.members.array()[0]);
-        msg.reply(`This user is afk, reason : ${status}`);
-    }
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'kick' && msg.mebmer.hasPermission("ADMINISTRATOR")){
         //kick @user
         let member = msg.mentions.members.array()[0];
@@ -64,7 +58,7 @@ client.on("message", msg =>{
             if(!member || !role) return;
             if(!member.roles.get(role.id)) return;
             member.removeRole(role);
-            msg.reply("User was given this role");
+            msg.reply("User was removed from this role");
         }
     }
 
@@ -120,132 +114,6 @@ client.on("message", msg =>{
             }
         }
         channel.send(mess);
-    }
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'afk'){
-        //afk status/or withoutstatus
-        let args = msg.content.split(' ');
-        let status = '';
-        for(let i = 1; i < args.length; i++){
-            status += args[i];
-            if(i !== args.length - 1) status += ' ';
-        }
-        afk.push({member : msg.member, status : status});
-        msg.reply("You are now afk");
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === (settings.prefix + "whois")){
-        //;whois @user
-        let rolesField;
-        let permissionField = '';
-        let user = msg.mentions.users.array()[0];
-        let member = msg.mentions.members.array()[0];
-        if(!member){
-            member = msg.member;
-        }
-        if(!user){
-            user = msg.author;
-        }
-        let minutes = member.joinedAt.getMinutes().toString();
-        let minutesUser = user.createdAt.getMinutes().toString();
-        if(member.joinedAt.getMinutes() < 10){
-            minutes = '0' + minutes;
-        }
-        if(user.createdAt.getMinutes() < 10){
-            minutesUser = '0' + minutesUser;
-        }
-        let userEmbed = new Discord.RichEmbed();
-        userEmbed.setThumbnail(user.avatarURL);
-        userEmbed.setAuthor(user.username, user.avatarURL);
-        userEmbed.addField("Joined at", member.joinedAt.toDateString() + '\n' + member.joinedAt.getHours() + ":" + minutes,true);
-        userEmbed.addField("Registered", user.createdAt.toDateString() + '\n' + member.joinedAt.getHours() + ":" + minutesUser,true);
-        if(member.roles.array().length > 8){
-            userEmbed.addField("Roles[" + member.roles.array().length + ']', "Too many to display");
-        }
-        else{
-            for(let i = 0; i < member.roles.array().length; i++){
-                if(member.roles.array()[i] !== "@everyone"){
-                    if(!rolesField){
-                        rolesField = member.roles.array()[i] + ' ';
-                    }
-                    else{
-                        rolesField += member.roles.array()[i] + ' ';
-                    }
-                }
-            }
-            userEmbed.addField("Roles[" + member.roles.array().length + ']', rolesField);
-        }
-        let permissions = member.permissions.toArray();
-        for(let i = 0; i < permissions.length; i++){
-            if(permissions[i] === "KICK_MEMBERS"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Kick Members"
-            }
-            if(permissions[i] === "BAN_MEMBERS"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Ban Members"
-            }
-            if(permissions[i] === "ADMINISTRATOR"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Administator"
-            }
-            if(permissions[i] === "MANAGE_CHANNELS"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Channels"
-            }
-            if(permissions[i] === "MANAGE_GUILD"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Server"
-            }
-            if(permissions[i] === "MANAGE_MESSAGES"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Messages"
-            }
-            if(permissions[i] === "MENTION_EVERYONE"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Mention Everyone"
-            }
-            if(permissions[i] === "MANAGE_ROLES"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Roles"
-            }
-            if(permissions[i] === "MANAGE_NICKNAMES"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Nicknames"
-            }
-            if(permissions[i] === "MANAGE_EMOJIS"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Emojis"
-            }
-            if(permissions[i] === "MANAGE_WEBHOOKS"){
-                if(permissionField != ""){
-                    permissionField += ", "
-                }
-                permissionField += "Manage Webhooks"
-            }
-        }
-        let ind = getUser(member.id);
-        userEmbed.addField("Permissions", permissionField);
-        msg.channel.send(userEmbed);
     }
 
     if(msg.content.toLowerCase().split(' ')[0] === (settings.prefix + "roleinfo")){
@@ -314,8 +182,6 @@ client.on("message", msg =>{
         //role give/remove @user
         //changecolor role @user
         //changenick @user nickname
-        //whois @user
-        //afk status
         //serverinfo
         //help
         //deleterole role
@@ -333,8 +199,6 @@ client.on("message", msg =>{
         embed.addField(">role give/remove @user @role", "Gives/removes role of this user")
         embed.addField(">changecolor @role hex", "Changes the hex color of mentioned role")
         embed.addField(">changenick @user nickname", "Changes this user nickname")
-        embed.addField(">whois @user", "Give info about this user");
-        embed.addField(">afk status", "Go into afk, so nobody will disturb you");
         embed.addField(">serverinfo", "Give info about server")
         embed.addField(">deleterole @role", "Deletes mentioned role")
         embed.addField(">addrole name color", "Creates a role with given hex color")
@@ -348,15 +212,6 @@ client.on("message", msg =>{
 
     }
 });
-
-function mentioned(member){
-    for(let i = 0; i < afk.length; i++){
-        if(member === afk[i].member){
-            return status;
-        }
-    }
-    return "-1";
-}
 
 function getUser(id){
     for(let i = 0; i < users.users.length; i++){
