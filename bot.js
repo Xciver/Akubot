@@ -176,6 +176,14 @@ client.on("message", msg =>{
         })
     }
 
+    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'blush'){
+        fs.readdir("./blushImages", (err, files) =>{
+            if(files.length === 0) return;
+            let rand = Math.floor(Math.random() * files.length);
+            msg.channel.send(`${msg.member.displayName} blushes`, {files : [{attachment : `./blushImages/${files[rand]}`}]});
+        })
+    }
+
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'help'){
         //kick @user
         //ban @user
