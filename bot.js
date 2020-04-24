@@ -184,6 +184,38 @@ client.on("message", msg =>{
         })
     }
 
+    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'cry'){
+        fs.readdir("./cryImages", (err, files) =>{
+            if(files.length === 0) return;
+            let rand = Math.floor(Math.random() * files.length);
+            msg.channel.send(`${msg.member.displayName} cries`, {files : [{attachment : `./cryImages/${files[rand]}`}]});
+        })
+    }
+
+    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'dance'){
+        fs.readdir("./danceImages", (err, files) =>{
+            if(files.length === 0) return;
+            let rand = Math.floor(Math.random() * files.length);
+            msg.channel.send(`${msg.member.displayName} dances`, {files : [{attachment : `./danceImages/${files[rand]}`}]});
+        })
+    }
+
+    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'wag'){
+        fs.readdir("./wagImages", (err, files) =>{
+            if(files.length === 0) return;
+            let rand = Math.floor(Math.random() * files.length);
+            msg.channel.send(`${msg.member.displayName} wags`, {files : [{attachment : `./wagImages/${files[rand]}`}]});
+        })
+    }
+
+    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'pout'){
+        fs.readdir("./poutImages", (err, files) =>{
+            if(files.length === 0) return;
+            let rand = Math.floor(Math.random() * files.length);
+            msg.channel.send(`${msg.member.displayName} pouts`, {files : [{attachment : `./poutImages/${files[rand]}`}]});
+        })
+    }
+
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'help'){
         //kick @user
         //ban @user
@@ -200,6 +232,11 @@ client.on("message", msg =>{
         //kiss @user
         //pat @user
         //lewd @user
+        //blush
+        //cry
+        //dance
+        //wag
+        //pout
         let embed = new Discord.RichEmbed();
         embed.setTitle("Commands");
         embed.addField(">kick @user", "Kicks a user");
@@ -216,6 +253,11 @@ client.on("message", msg =>{
         embed.addField(">kiss @user", "Kiss a user")
         embed.addField(">pat @user", "Pats a user")
         embed.addField(">lewd @user", "Lewds a user")
+        embed.addField(">blush", "blushes")
+        embed.addField(">cry", "cries")
+        embed.addField(">dance", "dances")
+        embed.addField(">wag", "wags")
+        embed.addField(">pout", "pouts")
         msg.channel.send(embed);
 
     }
