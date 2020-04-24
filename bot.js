@@ -26,9 +26,6 @@ client.on("message", msg =>{
     //addrole name color
     //announce channel message
     //roleinfo
-    //daily
-    //currency add/remove @user amount
-    //currency
     //profile
     if(mentioned(msg.mentions.members.array()[0]) !== "-1"){
         let status = mentioned(msg.mentions.members.array()[0]);
@@ -246,9 +243,9 @@ client.on("message", msg =>{
                 permissionField += "Manage Webhooks"
             }
         }
-        if(getUser(member.id) !== -1){
-            userEmbed.addField("Currency" , users.users[getUser(member.id)].currency, true);
-        }
+        // if(getUser(member.id) !== -1){
+        //     userEmbed.addField("Currency" , users.users[getUser(member.id)].currency, true);
+        // }
         userEmbed.addField("Permissions", permissionField);
         msg.channel.send(userEmbed);
     }
@@ -272,24 +269,24 @@ client.on("message", msg =>{
         embed.addField("Created at ", moment(msg.guild.createdAt).format('MMMM Do YYYY, h:mm:ss a'), true);
         msg.channel.send(embed);
     }
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'daily'){
-        //daily
-        let ind = getUser(msg.member.id);
-        if(ind !== -1){
-            if(users.users[ind].gainedPoints) return;
-        }
-        addPoints(msg.member, 100).then(() =>{
-            for(let i = 0; i < users.users.length; i++){
-                if(users.users[i].id === msg.member.id){
-                    ind = i;
-                }
-            }
-            users.users[ind].gainedPoints = true;
-            fs.writeFile("users.json", JSON.stringify(users, ' ', 2), function(err){
-                if(err) console.log(err);
-            })
-        });
-    }
+    // if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'daily'){
+    //     //daily
+    //     let ind = getUser(msg.member.id);
+    //     if(ind !== -1){
+    //         if(users.users[ind].gainedPoints) return;
+    //     }
+    //     addPoints(msg.member, 100).then(() =>{
+    //         for(let i = 0; i < users.users.length; i++){
+    //             if(users.users[i].id === msg.member.id){
+    //                 ind = i;
+    //             }
+    //         }
+    //         users.users[ind].gainedPoints = true;
+    //         fs.writeFile("users.json", JSON.stringify(users, ' ', 2), function(err){
+    //             if(err) console.log(err);
+    //         })
+    //     });
+    // }
 
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'profile'){
         //profile @user
@@ -323,8 +320,8 @@ client.on("message", msg =>{
         if(ind === -1){
             users.users.push({
                 id : msg.member.id,
-                currency : 0,
-                gainedPoints : false,
+                // currency : 0,
+                // gainedPoints : false,
                 profileFields : {title : fieldTitle, field : content}
             })
             fs.writeFile("users.json", JSON.stringify(users, ' ', 2), function(err){
@@ -339,25 +336,25 @@ client.on("message", msg =>{
             })
         }
     }
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'addcurrency' && msg.member.hasPermission("ADMINISTRATOR")){
-        //addcurrency @user points
-        let args = msg.content.split(' ');
-        let member = msg.mentions.members.array()[0];
-        if(!args[2] || !member) return;
-        let points = args[2];
-        addPoints(member, points);
-        msg.reply("Points were added");
-    }
+    // if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'addcurrency' && msg.member.hasPermission("ADMINISTRATOR")){
+    //     //addcurrency @user points
+    //     let args = msg.content.split(' ');
+    //     let member = msg.mentions.members.array()[0];
+    //     if(!args[2] || !member) return;
+    //     let points = args[2];
+    //     addPoints(member, points);
+    //     msg.reply("Points were added");
+    // }
 
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'removecurrency' && msg.member.hasPermission("ADMINISTRATOR")){
-        //addcurrency @user points
-        let args = msg.content.split(' ');
-        let member = msg.mentions.members.array()[0];
-        if(!args[2] || !member) return;
-        let points = args[2];
-        addPoints(member, points);
-        msg.reply("Points were added");
-    }
+    // if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'removecurrency' && msg.member.hasPermission("ADMINISTRATOR")){
+    //     //addcurrency @user points
+    //     let args = msg.content.split(' ');
+    //     let member = msg.mentions.members.array()[0];
+    //     if(!args[2] || !member) return;
+    //     let points = args[2];
+    //     addPoints(member, points);
+    //     msg.reply("Points were added");
+    // }
 
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'hug'){
         let member = msg.mentions.members.array()[0];
@@ -435,7 +432,7 @@ client.on("message", msg =>{
         embed.addField(">addrole name color", "Creates a role with given hex color")
         embed.addField(">announce #channel message", "Send a message to given channel")
         embed.addField(">roleinfo @role", "Give info about given role")
-        embed.addField(">daily", "Command for daily currency")
+        // embed.addField(">daily", "Command for daily currency")
         embed.addField(">profile @user", "Check this user profile")
         embed.addField(">profileadd {field_title} {content}", "Add field to the profile")
         embed.addField(">hug @user", "Hug user")
@@ -456,32 +453,32 @@ function mentioned(member){
     return "-1";
 }
 
-function addPoints(member, points){
-    return new Promise(resolve =>{
-        points = Number.parseInt(points);
-        let ind = -1;
-        for(let i = 0; i < users.users.length; i++){
-            if(users.users[i].id === member.id){
-                ind = i;
-            }
-        }
-        if(ind === -1){
-            users.users.push({
-                id : member.id,
-                currency : points,
-                gainedPoints : false,
-                profileFields : []
-            })
-            fs.writeFile("users.json", JSON.stringify(users, ' ', 2), function(err){
-                if(err) console.log(err);
-            })
-        }
-        else{
-            users.users[ind].currency += points;
-        }
-        resolve(0);
-    })
-}
+// function addPoints(member, points){
+//     return new Promise(resolve =>{
+//         points = Number.parseInt(points);
+//         let ind = -1;
+//         for(let i = 0; i < users.users.length; i++){
+//             if(users.users[i].id === member.id){
+//                 ind = i;
+//             }
+//         }
+//         if(ind === -1){
+//             users.users.push({
+//                 id : member.id,
+//                 currency : points,
+//                 gainedPoints : false,
+//                 profileFields : []
+//             })
+//             fs.writeFile("users.json", JSON.stringify(users, ' ', 2), function(err){
+//                 if(err) console.log(err);
+//             })
+//         }
+//         else{
+//             users.users[ind].currency += points;
+//         }
+//         resolve(0);
+//     })
+// }
 
 function getUser(id){
     for(let i = 0; i < users.users.length; i++){
