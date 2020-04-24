@@ -1,6 +1,6 @@
 const fs = require("fs");
 const settings = require("./settings.json");
-// const users = require("./users.json");
+const users = require("./users.json");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 var moment = require("moment");
