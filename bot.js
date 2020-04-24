@@ -243,6 +243,7 @@ client.on("message", msg =>{
                 permissionField += "Manage Webhooks"
             }
         }
+        let ind = getUser(member.id);
         // if(getUser(member.id) !== -1){
         //     userEmbed.addField("Currency" , users.users[getUser(member.id)].currency, true);
         // }
