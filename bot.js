@@ -10,6 +10,8 @@ client.login(process.env.token);
 
 client.on("ready", ready =>{
     console.log("Ready");
+    //status
+    client.user.setActivity('Playing with kittens', { type: 'WATCHING'}).catch(console.error);
 });
 
 client.on("message", msg =>{
