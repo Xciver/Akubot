@@ -12,6 +12,10 @@ client.on("ready", ready =>{
     console.log("Ready");
     //status
     client.user.setActivity('>help for commands', { type: 'PLAYING'}).catch(console.error);
+    //avatar
+    client.user.setAvatar('./avatar.png')
+        .then(user => console.log(`New avatar set!`))
+        .catch(console.error);
 });
 
 client.on("message", msg =>{
