@@ -16,6 +16,10 @@ client.on("ready", ready =>{
     client.user.setAvatar('./avatar.png')
         .then(user => console.log(`New avatar set!`))
         .catch(console.error);
+    //username
+    client.user.setUsername('Sōji Mitsuka')
+        .then(user => console.log(`My new username is ${user.username}`))
+        .catch(console.error);
 });
 
 client.on("message", msg =>{
