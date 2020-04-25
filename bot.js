@@ -11,7 +11,7 @@ client.login(process.env.token);
 client.on("ready", ready =>{
     console.log("Ready");
     //status
-    client.user.setActivity('with kittens', { type: 'PLAYING'}).catch(console.error);
+    client.user.setActivity('>help for commands', { type: 'PLAYING'}).catch(console.error);
 });
 
 client.on("message", msg =>{
