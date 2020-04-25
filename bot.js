@@ -12,18 +12,6 @@ client.on("ready", ready =>{
     console.log("Ready");
 });
 
-//bot status
-const bot = new Discord.Client({disableEveryone: true});
-let statuses = [
-    `${bot.guilds.cache.size} Servers`,
-    ">help",
-    `over ${bot.users.cache.size} users!`
-]
-setInterval(function() {
-    let status = statuses[Math.floor(Math.random() * statuses.length)]
-    bot.user.setActivity(status, {type: "WATCHING"});
-}, 10000)
-
 client.on("message", msg =>{
     //kick @user
     //ban @user
