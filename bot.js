@@ -23,93 +23,10 @@ client.on("ready", ready =>{
 });
 
 client.on("message", msg =>{
-    //kick @user
-    //ban @user
-    //role give/remove @user
-    //changecolor role @user
-    //changenick @user nickname
     //serverinfo
     //help
-    //deleterole role
-    //addrole name color
     //announce channel message
     //roleinfo
-    //profile
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'kick' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //kick @user
-        let member = msg.mentions.members.array()[0];
-        if(!member) return;
-        member.kick();
-        msg.reply("User was kicked");
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'ban' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //ban @user
-        let member = msg.mentions.members.array()[0];
-        if(!member) return;
-        member.ban();
-        msg.reply("User was banned");
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'role' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //role give/remove @user
-        let args = msg.content.split(' ');
-        if(!args[1]) return;
-        if(args[1] === 'give'){
-            let role = msg.mentions.roles.array()[0];
-            let member = msg.mentions.members.array()[0];
-            if(!member || !role) return;
-            member.addRole(role);
-            msg.reply("User was given this role");
-        }
-        else if(args[1] === 'remove'){
-            let role = msg.mentions.roles.array()[0];
-            let member = msg.mentions.members.array()[0];
-            if(!member || !role) return;
-            if(!member.roles.get(role.id)) return;
-            member.removeRole(role);
-            msg.reply("User was removed from this role");
-        }
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'changecolor' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //changecolor role #hex
-        let role = msg.mentions.roles.array()[0];
-        let args = msg.content.split(' ');
-        if(!args[2] || !role) return;
-        role.setColor(args[2]);
-        msg.reply("Color of this role was changed");
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'changenickname' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //changenickname @user nick
-        let args = msg.content.split(' ');
-        let member = msg.mentions.members.array()[0];
-        if(!args[2] || !member) return;
-        let nick = '';
-        for(let i = 2; i < args.length; i++){
-            nick += args[i];
-            if(i !== args.length - 1) nick += ' ';
-        }
-        member.setNickname(nick);
-        msg.reply("Nickname was changed");
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'addrole' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //addrole name hex
-        let args = msg.content.split(' ');
-        if(!args[1] || args[2]) return;
-        msg.guild.createRole({name : args[1], color : args[2]});
-        msg.reply("Role was created");
-    }
-
-    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'deleterole' && msg.mebmer.hasPermission("ADMINISTRATOR")){
-        //deleterole role
-        let role = msg.mentions.roles.array()[0];
-        if(!role) return;
-        role.delete();
-        msg.reply("Role was deleted");
-    }
 
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'announce' && msg.mebmer.hasPermission("ADMINISTRATOR")){
         //announce #channel message
@@ -152,7 +69,7 @@ client.on("message", msg =>{
         fs.readdir("./hugImages", (err, files) =>{
             if(files.length === 0) return;
             let rand = Math.floor(Math.random() * files.length);
-            msg.channel.send(`${msg.member.displayName} hugs ${member}`, {files : [{attachment : `./hugImages/${files[rand]}`}]});
+            msg.channel.send(`${msg.member.displayName} hugs ${member.displayName}`, {files : [{attachment : `./hugImages/${files[rand]}`}]});
         })
     }
 
@@ -227,15 +144,8 @@ client.on("message", msg =>{
     }
 
     if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'help'){
-        //kick @user
-        //ban @user
-        //role give/remove @user
-        //changecolor role @user
-        //changenick @user nickname
         //serverinfo
         //help
-        //deleterole role
-        //addrole name color
         //announce channel message
         //roleinfo
         //hug @user
@@ -249,14 +159,7 @@ client.on("message", msg =>{
         //pout
         let embed = new Discord.RichEmbed();
         embed.setTitle("Commands");
-        embed.addField(">kick @user", "Kicks a user");
-        embed.addField(">ban @user", "Bans a user")
-        embed.addField(">role give/remove @user @role", "Gives/removes role of this user")
-        embed.addField(">changecolor @role hex", "Changes the hex color of mentioned role")
-        embed.addField(">changenick @user nickname", "Changes this user nickname")
         embed.addField(">serverinfo", "Give info about server")
-        embed.addField(">deleterole @role", "Deletes mentioned role")
-        embed.addField(">addrole name color", "Creates a role with given hex color")
         embed.addField(">announce #channel message", "Send a message to given channel")
         embed.addField(">roleinfo @role", "Give info about given role")
         embed.addField(">hug @user", "Hug user")
