@@ -79,7 +79,7 @@ client.on("message", msg =>{
         fs.readdir("./kissImages", (err, files) =>{
             if(files.length === 0) return;
             let rand = Math.floor(Math.random() * files.length);
-            msg.channel.send(`${msg.member.displayName} kisses ${member}`, {files : [{attachment : `./kissImages/${files[rand]}`}]});
+            msg.channel.send(`${msg.member.displayName} kisses ${member.displayName}`, {files : [{attachment : `./kissImages/${files[rand]}`}]});
         })
     }
 
@@ -89,7 +89,7 @@ client.on("message", msg =>{
         fs.readdir("./patImages", (err, files) =>{
             if(files.length === 0) return;
             let rand = Math.floor(Math.random() * files.length);
-            msg.channel.send(`${msg.member.displayName} pats ${member}`, {files : [{attachment : `./patImages/${files[rand]}`}]});
+            msg.channel.send(`${msg.member.displayName} pats ${member.displayName}`, {files : [{attachment : `./patImages/${files[rand]}`}]});
         })
     }
 
@@ -99,7 +99,17 @@ client.on("message", msg =>{
         fs.readdir("./lewdImages", (err, files) =>{
             if(files.length === 0) return;
             let rand = Math.floor(Math.random() * files.length);
-            msg.channel.send(`${msg.member.displayName} lewds ${member}`, {files : [{attachment : `./lewdImages/${files[rand]}`}]});
+            msg.channel.send(`${msg.member.displayName} lewds ${member.displayName}`, {files : [{attachment : `./lewdImages/${files[rand]}`}]});
+        })
+    }
+
+    if(msg.content.toLowerCase().split(' ')[0] === settings.prefix + 'lick'){
+        let member = msg.mentions.members.array()[0];
+        if(!member) return;
+        fs.readdir("./lickImages", (err, files) =>{
+            if(files.length === 0) return;
+            let rand = Math.floor(Math.random() * files.length);
+            msg.channel.send(`${msg.member.displayName} licks ${member.displayName}`, {files : [{attachment : `./lickImages/${files[rand]}`}]});
         })
     }
 
@@ -152,6 +162,7 @@ client.on("message", msg =>{
         //kiss @user
         //pat @user
         //lewd @user
+        //lick @user
         //blush
         //cry
         //dance
