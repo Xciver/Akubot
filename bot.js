@@ -13,6 +13,7 @@ client.on("ready", ready =>{
 });
 
 //bot status
+const bot = new Discord.Client({disableEveryone: true});
 let statuses = [
     `${bot.guilds.cache.size} Servers`,
     ">help",
