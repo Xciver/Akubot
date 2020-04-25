@@ -177,6 +177,7 @@ client.on("message", msg =>{
         embed.addField(">kiss @user", "Kiss a user")
         embed.addField(">pat @user", "Pats a user")
         embed.addField(">lewd @user", "Lewds a user")
+        embed.addField(">lick @user", "Licks a user")
         embed.addField(">blush", "blushes")
         embed.addField(">cry", "cries")
         embed.addField(">dance", "dances")
